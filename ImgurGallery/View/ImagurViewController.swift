@@ -21,6 +21,7 @@ class ImagurViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        // By default the switch is OFF
         self.evenSumSwitch.isOn = false
     }
 
@@ -31,18 +32,23 @@ class ImagurViewController: UIViewController {
     
     @IBAction func switchButtonClicked(_ sender: UISwitch) {
         
+        // If filter switch is ON
         if self.evenSumSwitch.isOn {
             
+            // Filter the results to display
             if let results = viewModel.searchResults, results.count > 0 {
                 viewModel.filterResultsWithEvenSum()
             } else {
+                // If no results are there to filter show error message
                 AlertError.showMessage(title: "Error", msg: "No results availble to filter. Please search with query and then filter.")
                 self.evenSumSwitch.isOn = false
                 return
             }
         }
+        // Reload the table view
         self.tableView.reloadData()
     }
+    
     /*
     // MARK: - Navigation
 
@@ -80,13 +86,15 @@ extension ImagurViewController : UITextFieldDelegate {
                 return
             }
             
-            if let rs = results, rs.count > 0 {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                
+                if let rs = results, rs.count > 0 {
+                    
                     // Refresh tableview
                     self.tableView.reloadData()
-                }
-            } else {
-                DispatchQueue.main.async {
+                } else {
+                    
+                    // Show error for emty results
                     AlertError.showMessage(title: "Error", msg: "No results found for given query. Please try with different search query.")
                 }
             }
@@ -106,7 +114,10 @@ extension ImagurViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! ImgurTableViewCell
+        
+        // Show results from filtered array if switch is ON
         if self.evenSumSwitch.isOn {
             let data = viewModel.filteredSearchResults![indexPath.row]
             cell.set(data: data)
@@ -119,6 +130,7 @@ extension ImagurViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
+        // Returning the row count based on switch status
         if self.evenSumSwitch.isOn {
             if let results = viewModel.filteredSearchResults, results.count > 0 {
                 return results.count

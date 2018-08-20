@@ -14,10 +14,11 @@ class NetworkService {
     
     func fetchResultsForQuery(_ query: String, callback:@escaping (_ results : Array<ImgurModel>?, _ error : Error?) -> ()) {
         
+        // Create a URL to find top images of the week with user search query
         let url = URL(string: "\(Constants.APIData.baseAPI)/\(Constants.APIData.apiVersion)/gallery/search/top/week/1?q=\(query)".addingPercentEncoding(withAllowedCharacters:.urlQueryAllowed)!)
         
+        // Create a request object to add header Authorization and its value
         var request = URLRequest(url: url!)
-        
         let authorizationKey = "Client-ID ".appending(Constants.ImgurData.clientID)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
