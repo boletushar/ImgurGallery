@@ -36,7 +36,7 @@ class ImgurTableViewCell: UITableViewCell {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy h:mm a"
         self.dateLabel.text = formatter.string(from: data.datetime)
-        self.imageCountLabel.text = "Total images \(data.imageCount)"
+        self.imageCountLabel.text = "Image count \(data.imageCount)"
         
         if let url = URL(string: data.imageURL!) {
             
