@@ -28,7 +28,7 @@ class GalleryViewModel {
         // Fetch new
         self.queryString = query
         NetworkService.shared.fetchResultsForQuery(query) { (results, error) in
-            self.searchResults = results
+            self.searchResults = results?.sorted{ $0.datetime > $1.datetime }
             callback(results, error)
         }
     }
